@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Schedule.View"
+             xmlns:convert="clr-namespace:Schedule.Converters"
              xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Schedule.View.MainSupplierView"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -12,6 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/StyleDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <convert:BoolVisibleInvisibleConverter x:Key="VisibleConvert"/>
             <Style x:Key="FocusVisual">
                 <Setter Property="Control.Template">
                     <Setter.Value>
@@ -363,7 +365,7 @@
                         ItemsSource="{Binding SupplierVM.Suppliers, Source={StaticResource Locator}}" 
                         SelectedItem="{Binding SupplierVM.SelectedSupplier, Source={StaticResource Locator}}"
                         Foreground="White"
-                        DisplayMemberPath="Name"
+                        DisplayMemberPath="Name" Visibility="{Binding SupplierVM.VisibleCOntrolEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"
                         >
                         <ComboBox.Background>
                             <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
@@ -373,16 +375,30 @@
                         </ComboBox.Background>
                     </ComboBox>
 
+
+                    <TextBox Grid.Column="1"
+                             Grid.Row="0" Style="{DynamicResource GlassTextBox}"
+                             Width="120"
+                             Height="24"
+                             Text="{Binding SupplierVM.SelectedSupplier.Name, Source={StaticResource Locator}}"
+                             Foreground="White"
+                           
+                             Visibility="{Binding SupplierVM.HiddenControlEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"/>
+
                     <TextBox Grid.Column="1"
                              Grid.Row="1" Style="{DynamicResource GlassTextBox}"
                              Width="120"
                              Height="24"
-                             Text="{Binding SupplierVM.SelectedSupplier.Description, Source={StaticResource Locator}}" Foreground="White"/>
+                             Text="{Binding SupplierVM.SelectedSupplier.Description, Source={StaticResource Locator}}"
+                             Foreground="White"
+                             IsReadOnly="{Binding SupplierVM.ControlIsReadOnly, Source={StaticResource Locator}}"/>
                     <TextBox Grid.Column="1"
                              Grid.Row="2" Style="{DynamicResource GlassTextBox}"
                              Width="120"
                              Height="24"
-                             Text="{Binding SupplierVM.SelectedSupplier.Location, Source={StaticResource Locator}}" Foreground ="White"/>
+                             Text="{Binding SupplierVM.SelectedSupplier.Location, Source={StaticResource Locator}}"
+                             Foreground ="White"
+                             IsReadOnly="{Binding SupplierVM.ControlIsReadOnly, Source={StaticResource Locator}}"/>
                 </Grid>
                 <GroupBox Margin="46,130,20,-79" Style="{DynamicResource GroupBoxStyle}">
                     <Grid>
@@ -401,6 +417,18 @@
                                 FontFamily="Britannic Bold"
                                 FontWeight="Bold" 
                                 FontSize="14" Margin="10,2"/>
+
+                        <Button Content="Save"
+                                Width="50"
+                                Height="50"
+                                Grid.Column="0"
+                                Style="{DynamicResource GlassButton}"
+                                Foreground="White" 
+                                Background="Green"
+                                FontFamily="Britannic Bold"
+                                FontWeight="Bold" 
+                                FontSize="14" Margin="10,2"
+                                Visibility="{Binding SupplierVM.HiddenControlEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"/>
                         
                         <Button Content="Edit"
                                 Width="50"
@@ -411,7 +439,9 @@
                                 Background="#FFFFE800"
                                 FontFamily="Britannic Bold"
                                 FontWeight="Bold" 
-                                FontSize="14"/>
+                                FontSize="14" 
+                                Command="{Binding SupplierVM.ControlActivatorCommand, Source={StaticResource Locator}}" 
+                                Visibility="{Binding SupplierVM.VisibleCOntrolEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"/>
 
                         <Button Content="Delete"
                                 Width="50"
@@ -423,6 +453,20 @@
                                 FontFamily="Britannic Bold"
                                 FontWeight="Bold" 
                                 FontSize="14" Margin="10,0"/>
+
+                        <Button Content="Cancel"
+                                Width="50"
+                                Height="50"
+                                Grid.Column="2"
+                                Style="{DynamicResource GlassButton}"
+                                Foreground="White" 
+                                Background="Red"
+                                FontFamily="Britannic Bold"
+                                FontWeight="Bold" 
+                                FontSize="14" Margin="10,0" 
+                                Visibility="{Binding SupplierVM.HiddenControlEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"
+                                Command="{Binding SupplierVM.ControlActivatorCommand, Source={StaticResource Locator}}"/>
+
                     </Grid>
                 </GroupBox>
             </Grid>
