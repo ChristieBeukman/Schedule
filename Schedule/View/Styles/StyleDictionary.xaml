@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Schedule.View.Styles">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="GlassButtonStyle.xaml" />
+        <ResourceDictionary Source="GlassFrameTextBox.xaml"/>
+        <ResourceDictionary Source="ComboToggleGlassStyle.xaml"/>
+        <ResourceDictionary Source="GlassGroupBoxStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>
