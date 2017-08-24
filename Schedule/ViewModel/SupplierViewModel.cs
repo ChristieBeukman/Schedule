@@ -34,7 +34,8 @@ namespace Schedule.ViewModel
         int SupID;
         string supLocation;
         private Suppliier _OldSupplier;
-
+        private bool _MainView =true;
+        private bool _AddView = false;
 
         #endregion Private
 
@@ -210,6 +211,34 @@ namespace Schedule.ViewModel
             }
         }
 
+        public bool MainView
+        {
+            get
+            {
+                return _MainView;
+            }
+
+            set
+            {
+                _MainView = value;
+                RaisePropertyChanged("MainView");
+            }
+        }
+
+        public bool AddView
+        {
+            get
+            {
+                return _AddView;
+            }
+
+            set
+            {
+                _AddView = value;
+                RaisePropertyChanged("AddView");
+            }
+        }
+
         #endregion Public
 
         #region Commands
@@ -219,6 +248,7 @@ namespace Schedule.ViewModel
         public RelayCommand DeleteSupplierCommand { get; set; }
         public RelayCommand ControlActivatorCommand { get; set; }
         public RelayCommand UpdateSupplierCommand { get; set; }
+
 
 
         #endregion
@@ -301,6 +331,10 @@ namespace Schedule.ViewModel
             _ServiceProxy.CreateSupplier(Sup);
             RaisePropertyChanged("Sup");
             MessageBox.Show(Sup + " has been succesfully added");
+            AddView = false;
+            MainView = true;
+            RaisePropertyChanged("AddView");
+            RaisePropertyChanged("MainView");
         }
 
         /// <summary>
@@ -308,8 +342,18 @@ namespace Schedule.ViewModel
         /// </summary>
         void OpenAddSupplierWindow()
         {
-            //var win = new AddSupplierWindowView();
-            //win.ShowDialog();
+            if (MainView == true)
+            {
+                MainView = false;
+                AddView = true;
+            }
+            else
+            {
+                MainView = true;
+                AddView = false;
+            }
+            RaisePropertyChanged("MainView");
+            RaisePropertyChanged("AddView");
         }
 
         /// <summary>
