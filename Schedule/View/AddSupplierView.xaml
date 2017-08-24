@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="Schedule.View.AddSupplierView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Schedule.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" DataContext="{Binding SupplierVM, Mode=OneWay, Source={StaticResource Locator}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/StyleDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="21*"/>
+            <RowDefinition Height="29*"/>
+        </Grid.RowDefinitions>
+        <GroupBox Style="{DynamicResource GroupBoxStyle}" Margin="0,0,0,27" Header="Add" FontWeight="Bold" Foreground="#FFF9F9F9">
+            <Grid>
+                <Grid Margin="10,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Content="Supplier"
+                           Grid.Column="0"
+                           Grid.Row="0"
+                           HorizontalContentAlignment="Center"
+                           VerticalContentAlignment="Center"
+                           Foreground="Black"
+                           FontFamily="Stencil"
+                           FontSize="18" HorizontalAlignment="Right">
+                        <Label.Effect>
+                            <DropShadowEffect Color="White"
+                                              BlurRadius="0"
+                                              ShadowDepth="1"/>
+                        </Label.Effect>
+                    </Label>
+                    <Label Content="Description"
+                           Grid.Column="0"
+                           Grid.Row="1"
+                           HorizontalContentAlignment="Center"
+                           VerticalContentAlignment="Center"
+                           Foreground="Black"
+                           FontFamily="Stencil"
+                           FontSize="18" HorizontalAlignment="Right">
+                        <Label.Effect>
+                            <DropShadowEffect Color="White"
+                                              BlurRadius="0"
+                                              ShadowDepth="1"/>
+                        </Label.Effect>
+                    </Label>
+                    <Label Content="Location"
+                           Grid.Column="0"
+                           Grid.Row="2"
+                           HorizontalContentAlignment="Right"
+                           VerticalContentAlignment="Center"
+                           Foreground="Black"
+                           FontFamily="Stencil"
+                           FontSize="18">
+                        <Label.Effect>
+                            <DropShadowEffect Color="White"
+                                              BlurRadius="0"
+                                              ShadowDepth="1"/>
+                        </Label.Effect>
+                    </Label>
+
+
+                    <TextBox Grid.Column="1"
+                             Grid.Row="0" Style="{DynamicResource GlassTextBox}"
+                             Width="120"
+                             Height="24"
+                             Foreground="White" Text="{Binding SupplierVM.Supplier.Name, Source={StaticResource Locator}}"
+                           />
+                    <TextBox Grid.Column="1"
+                             Grid.Row="1" Style="{DynamicResource GlassTextBox}"
+                             Width="120"
+                             Height="24"
+                             Foreground="White" Text="{Binding SupplierVM.Supplier.Description, Source={StaticResource Locator}}"
+                           />
+                    <TextBox Grid.Column="1"
+                             Grid.Row="2" Style="{DynamicResource GlassTextBox}"
+                             Width="120"
+                             Height="24"
+                             Foreground="White" Text="{Binding SupplierVM.Supplier.Location, Source={StaticResource Locator}}"
+                           />
+                </Grid>
+            </Grid>
+        </GroupBox>
+        <GroupBox Style="{DynamicResource GroupBoxStyle}" Margin="61,104,66,139" Grid.RowSpan="2">
+            <Grid>
+                <Button Content="Save" Style="{DynamicResource GlassButton}" Height="45" Width="46" Margin="26,4,-26,-5" Background="#FF23FF00" Foreground="White" FontWeight="Bold" Command="{Binding SupplierVM.AddSupplierCommand, Source={StaticResource Locator}}"/>
+                <Button Content="Cancel" Style="{DynamicResource GlassButton}" Height="45" Width="46" Margin="94,4,-94,-5" Background="#FFFF5100" Foreground="White" FontWeight="Bold"/>
+            </Grid>
+            
+        </GroupBox>
+       
+    </Grid>
+</UserControl>
