@@ -4,17 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Schedule.View"
-             xmlns:convert="clr-namespace:Schedule.Converters"
-             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Schedule.View.MainSupplierView"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             
+             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" xmlns:Converters="clr-namespace:Schedule.Converters" x:Class="Schedule.View.AddSupplierView"
+             
+             mc:Ignorable="d" d:DesignWidth="300" Height="320">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/StyleDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <local:AddSupplierView x:Key="AddSupplier" />
-            <convert:BoolVisibleInvisibleConverter x:Key="VisibleConvert"/>
             <Style x:Key="FocusVisual">
                 <Setter Property="Control.Template">
                     <Setter.Value>
@@ -29,6 +27,53 @@
                 <GradientStop Color="#FFE5E5E5" Offset="1.0"/>
             </LinearGradientBrush>
             <SolidColorBrush x:Key="ComboBox.Static.Border" Color="#FFACACAC"/>
+            <SolidColorBrush x:Key="ComboBox.Pressed.Glyph" Color="#FF000000"/>
+
+
+            <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
+                <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
+                        <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
+                            <Border x:Name="dropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1" Background="{DynamicResource ComboBox.Pressed.Glyph}">
+                                <ScrollViewer x:Name="DropDownScrollViewer">
+                                    <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
+                                        <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                            <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" Height="{Binding ActualHeight, ElementName=dropDownBorder}" Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
+                                        </Canvas>
+                                        <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Border>
+                        </Themes:SystemDropShadowChrome>
+                    </Popup>
+                    <ToggleButton x:Name="toggleButton" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource ComboToggleButtonStyle}"/>
+                    <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                        <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
+                        <Setter Property="Color" TargetName="shadow" Value="#71000000"/>
+                    </Trigger>
+                    <Trigger Property="HasItems" Value="false">
+                        <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
+                    </Trigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsGrouping" Value="true"/>
+                            <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                    </MultiTrigger>
+                    <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+                        <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
+                        <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
             <SolidColorBrush x:Key="ComboBox.Static.Editable.Background" Color="#FFFFFFFF"/>
             <SolidColorBrush x:Key="ComboBox.Static.Editable.Border" Color="#FFABADB3"/>
             <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Background" Color="Transparent"/>
@@ -46,7 +91,6 @@
                 <GradientStop Color="#FFDCECFC" Offset="1.0"/>
             </LinearGradientBrush>
             <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Border" Color="#FF7EB4EA"/>
-            <SolidColorBrush x:Key="ComboBox.Pressed.Glyph" Color="#FF000000"/>
             <LinearGradientBrush x:Key="ComboBox.Pressed.Background" EndPoint="0,1" StartPoint="0,0">
                 <GradientStop Color="#FFDAECFC" Offset="0.0"/>
                 <GradientStop Color="#FFC4E0FC" Offset="1.0"/>
@@ -161,50 +205,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <ControlTemplate x:Key="ComboBoxTemplate" TargetType="{x:Type ComboBox}">
-                <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
-                    </Grid.ColumnDefinitions>
-                    <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Placement="Bottom">
-                        <Themes:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
-                            <Border x:Name="dropDownBorder" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1" Background="{DynamicResource ComboBox.Pressed.Glyph}">
-                                <ScrollViewer x:Name="DropDownScrollViewer">
-                                    <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
-                                        <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
-                                            <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" Height="{Binding ActualHeight, ElementName=dropDownBorder}" Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
-                                        </Canvas>
-                                        <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                                    </Grid>
-                                </ScrollViewer>
-                            </Border>
-                        </Themes:SystemDropShadowChrome>
-                    </Popup>
-                    <ToggleButton x:Name="toggleButton" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource ComboToggleButtonStyle}"/>
-                    <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                </Grid>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
-                        <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
-                        <Setter Property="Color" TargetName="shadow" Value="#71000000"/>
-                    </Trigger>
-                    <Trigger Property="HasItems" Value="false">
-                        <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
-                    </Trigger>
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsGrouping" Value="true"/>
-                            <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
-                        </MultiTrigger.Conditions>
-                        <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
-                    </MultiTrigger>
-                    <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
-                        <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
-                        <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
-                    </Trigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
             <SolidColorBrush x:Key="TextBox.Static.Background" Color="#FFFFFFFF"/>
             <Style x:Key="ComboBoxEditableTextBox" TargetType="{x:Type TextBox}">
                 <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -295,80 +295,42 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            <Converters:BoolVisibleInvisibleConverter x:Key="VisibleConvert"/>
+
         </ResourceDictionary>
     </UserControl.Resources>
-    <UserControl.DataContext>
-        <Binding Mode="OneWay" Path="SupplierVM" Source="{StaticResource Locator}"/>
-    </UserControl.DataContext>
-    <Grid>
-        <local:AddSupplierView Visibility="{Binding SupplierVM.VisibleAddControl, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}" Margin="0,0,0,-20" />
-        <GroupBox Style="{DynamicResource GroupBoxStyle}" Visibility="{Binding SupplierVM.VisibileMainControl, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}" d:IsHidden="True">
+    <UserControl.Visibility>
+        <Binding Converter="{StaticResource VisibleConvert}" Path="SupplierVM.VisibleAddControl" Source="{StaticResource Locator}"/>
+    </UserControl.Visibility>
+    <Grid DataContext="{Binding Source={StaticResource Locator}}">
+        <GroupBox Margin="0,0,0,20" Style="{DynamicResource GroupBoxStyle}">
             <Grid>
-                <Grid HorizontalAlignment="Center" Margin="15,15,0,0">
+                <Grid Margin="15,15,0,0" HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="125"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Label Content="Supplier"
-                           Grid.Column="0"
-                           Grid.Row="0"
-                           HorizontalContentAlignment="Center"
-                           VerticalContentAlignment="Center"
-                           Foreground="Black"
-                           FontFamily="Stencil"
-                           FontSize="18" HorizontalAlignment="Right">
+                    <Label VerticalContentAlignment="Center" Grid.Row="0" HorizontalContentAlignment="Center" HorizontalAlignment="Right" FontFamily="Stencil" FontSize="18" Foreground="Black" Grid.Column="0" Content="Name">
                         <Label.Effect>
-                            <DropShadowEffect Color="White"
-                                              BlurRadius="0"
-                                              ShadowDepth="1"/>
+                            <DropShadowEffect BlurRadius="0" Color="White" ShadowDepth="1"/>
                         </Label.Effect>
                     </Label>
-                    <Label Content="Description"
-                           Grid.Column="0"
-                           Grid.Row="1"
-                           HorizontalContentAlignment="Center"
-                           VerticalContentAlignment="Center"
-                           Foreground="Black"
-                           FontFamily="Stencil"
-                           FontSize="18" HorizontalAlignment="Right">
+                    <Label VerticalContentAlignment="Center" Grid.Row="1" HorizontalContentAlignment="Center" HorizontalAlignment="Right" FontFamily="Stencil" FontSize="18" Foreground="Black" Grid.Column="0" Content="Description">
                         <Label.Effect>
-                            <DropShadowEffect Color="White"
-                                              BlurRadius="0"
-                                              ShadowDepth="1"/>
+                            <DropShadowEffect BlurRadius="0" Color="White" ShadowDepth="1"/>
                         </Label.Effect>
                     </Label>
-                    <Label Content="Location"
-                           Grid.Column="0"
-                           Grid.Row="2"
-                           HorizontalContentAlignment="Right"
-                           VerticalContentAlignment="Center"
-                           Foreground="Black"
-                           FontFamily="Stencil"
-                           FontSize="18">
+                    <Label VerticalContentAlignment="Center" Grid.Row="2" HorizontalContentAlignment="Right" FontFamily="Stencil" FontSize="18" Foreground="Black" Grid.Column="0" Content="Location">
                         <Label.Effect>
-                            <DropShadowEffect Color="White"
-                                              BlurRadius="0"
-                                              ShadowDepth="1"/>
+                            <DropShadowEffect BlurRadius="0" Color="White" ShadowDepth="1"/>
                         </Label.Effect>
                     </Label>
-
-                    <ComboBox 
-                        Grid.Column="1"
-                        Grid.Row="0"
-                        Style="{DynamicResource ComboBoxStyle1}"
-                        Width="120"
-                        Height="27" 
-                        SelectedIndex="0" 
-                        ItemsSource="{Binding SupplierVM.Suppliers, Source={StaticResource Locator}}" 
-                        SelectedItem="{Binding SupplierVM.SelectedSupplier, Source={StaticResource Locator}}"
-                        Foreground="White"
-                        DisplayMemberPath="Name" Visibility="{Binding SupplierVM.VisibleCOntrolEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"
-                        >
+                    <ComboBox Width="120" Visibility="{Binding SupplierVM.VisibleCOntrolEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}" SelectedItem="{Binding SupplierVM.SelectedSupplier, Source={StaticResource Locator}}" SelectedIndex="0" Style="{DynamicResource ComboBoxStyle1}" Grid.Row="0" ItemsSource="{Binding SupplierVM.Suppliers, Source={StaticResource Locator}}" Height="27" Foreground="White" DisplayMemberPath="Name" Grid.Column="1">
                         <ComboBox.Background>
                             <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                                 <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -376,104 +338,22 @@
                             </LinearGradientBrush>
                         </ComboBox.Background>
                     </ComboBox>
-
-
-                    <TextBox Grid.Column="1"
-                             Grid.Row="0" Style="{DynamicResource GlassTextBox}"
-                             Width="120"
-                             Height="27"
-                             Text="{Binding SupplierVM.SelectedSupplier.Name, Source={StaticResource Locator}}"
-                             Foreground="White"
-                           
-                             Visibility="{Binding SupplierVM.HiddenControlEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"/>
-
-                    <TextBox Grid.Column="1"
-                             Grid.Row="1" Style="{DynamicResource GlassTextBox}"
-                             Width="120"
-                             Height="27"
-                             Text="{Binding SupplierVM.SelectedSupplier.Description, Source={StaticResource Locator}}"
-                             Foreground="White"
-                             IsReadOnly="{Binding SupplierVM.ControlIsReadOnly, Source={StaticResource Locator}}"/>
-                    <TextBox Grid.Column="1"
-                             Grid.Row="2" Style="{DynamicResource GlassTextBox}"
-                             Width="120"
-                             Height="27"
-                             Text="{Binding SupplierVM.SelectedSupplier.Location, Source={StaticResource Locator}}"
-                             Foreground ="White"
-                             IsReadOnly="{Binding SupplierVM.ControlIsReadOnly, Source={StaticResource Locator}}"/>
+                    <TextBox Width="120" Visibility="{Binding SupplierVM.HiddenControlEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}" Text="{Binding SupplierVM.Supplier.Name, Source={StaticResource Locator}}" Style="{DynamicResource GlassTextBox}" Grid.Row="0" Height="27" Foreground="White" Grid.Column="1"/>
+                    <TextBox Width="120" Text="{Binding SupplierVM.Supplier.Description, Source={StaticResource Locator}}" Style="{DynamicResource GlassTextBox}" Grid.Row="1" IsReadOnly="{Binding SupplierVM.ControlIsReadOnly, Source={StaticResource Locator}}" Height="27" Foreground="White" Grid.Column="1"/>
+                    <TextBox Width="120" Text="{Binding SupplierVM.Supplier.Location, Source={StaticResource Locator}}" Style="{DynamicResource GlassTextBox}" Grid.Row="2" IsReadOnly="{Binding SupplierVM.ControlIsReadOnly, Source={StaticResource Locator}}" Height="27" Foreground="White" Grid.Column="1"/>
                 </Grid>
-                <GroupBox Margin="46,130,20,-79" Style="{DynamicResource GroupBoxStyle}">
+                <GroupBox Margin="44,129,25,-78" Style="{DynamicResource GroupBoxStyle}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="Add"
-                                Width="50"
-                                Height="50"
-                                Grid.Column="0"
-                                Style="{DynamicResource GlassButton}"
-                                Foreground="White" 
-                                Background="Green"
-                                FontFamily="Britannic Bold"
-                                FontWeight="Bold" 
-                                FontSize="14" Margin="10,2" Command="{Binding SupplierVM.OpenAddSupplierView, Source={StaticResource Locator}}"/>
-
-                        <Button Content="Save"
-                                Width="50"
-                                Height="50"
-                                Grid.Column="0"
-                                Style="{DynamicResource GlassButton}"
-                                Foreground="White" 
-                                Background="Green"
-                                FontFamily="Britannic Bold"
-                                FontWeight="Bold" 
-                                FontSize="14" Margin="10,2"
-                                Visibility="{Binding SupplierVM.HiddenControlEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}" Command="{Binding SupplierVM.UpdateSupplierCommand, Source={StaticResource Locator}}"/>
-
-                        <Button Content="Edit"
-                                Width="50"
-                                Height="50"
-                                Grid.Column="1"
-                                Style="{DynamicResource GlassButton}"
-                                Foreground="White" 
-                                Background="#FFFFE800"
-                                FontFamily="Britannic Bold"
-                                FontWeight="Bold" 
-                                FontSize="14" 
-                                Command="{Binding SupplierVM.ControlActivatorCommand, Source={StaticResource Locator}}" 
-                                Visibility="{Binding SupplierVM.VisibleCOntrolEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"/>
-
-                        <Button Content="Delete"
-                                Width="50"
-                                Height="50"
-                                Grid.Column="2"
-                                Style="{DynamicResource GlassButton}"
-                                Foreground="White" 
-                                Background="Red"
-                                FontFamily="Britannic Bold"
-                                FontWeight="Bold" 
-                                FontSize="14" 
-                                Margin="10,0" 
-                                Command="{Binding SupplierVM.DeleteSupplierCommand, Source={StaticResource Locator}}"/>
-
-                        <Button Content="Cancel"
-                                Width="50"
-                                Height="50"
-                                Grid.Column="2"
-                                Style="{DynamicResource GlassButton}"
-                                Foreground="White" 
-                                Background="Red"
-                                FontFamily="Britannic Bold"
-                                FontWeight="Bold" 
-                                FontSize="14" Margin="10,0" 
-                                Visibility="{Binding SupplierVM.HiddenControlEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}"
-                                Command="{Binding SupplierVM.ControlActivatorCommand, Source={StaticResource Locator}}"/>
-
                     </Grid>
                 </GroupBox>
+                <Button Width="50" Style="{DynamicResource GlassButton}" Margin="169,132,41,-74" Height="50" FontFamily="Britannic Bold" FontSize="14" FontWeight="Bold" Foreground="White" Command="{Binding SupplierVM.OpenAddSupplierView}" Content="Cancel" Background="Red"/>
             </Grid>
         </GroupBox>
+        <Button Width="50" Visibility="{Binding SupplierVM.HiddenControlEnabled, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}" Style="{DynamicResource GlassButton}" Margin="65,132,185,138" Height="50" FontFamily="Britannic Bold" FontSize="14" FontWeight="Bold" Foreground="White" Command="{Binding SupplierVM.AddSupplierCommand, Source={StaticResource Locator}}" Content="Save" Background="Green"/>
     </Grid>
 </UserControl>

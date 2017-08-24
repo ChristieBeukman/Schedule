@@ -29,6 +29,8 @@ namespace Schedule.ViewModel
         private bool controlIsReadOnly = true;
         private bool hiddenControlEnabled = false;
         private bool visibleCOntrolEnabled = true;
+        private bool visibileMainControl = true;
+        private bool visibleAddControl = false; 
         string catName;
         string SupDescription;
         int SupID;
@@ -210,6 +212,35 @@ namespace Schedule.ViewModel
             }
         }
 
+        public bool VisibileMainControl
+        {
+            get
+            {
+                return visibileMainControl;
+            }
+
+            set
+            {
+                visibileMainControl = value;
+                RaisePropertyChanged("VisibileMainControl");
+            }
+        }
+
+        public bool VisibleAddControl
+        {
+            get
+            {
+                return visibleAddControl;
+            }
+
+            set
+            {
+                visibleAddControl = value;
+                RaisePropertyChanged("VisibleAddControl");
+            }
+        }
+
+
         #endregion Public
 
         #region Commands
@@ -219,6 +250,7 @@ namespace Schedule.ViewModel
         public RelayCommand DeleteSupplierCommand { get; set; }
         public RelayCommand ControlActivatorCommand { get; set; }
         public RelayCommand UpdateSupplierCommand { get; set; }
+
 
 
         #endregion
@@ -308,8 +340,11 @@ namespace Schedule.ViewModel
         /// </summary>
         void OpenAddSupplierWindow()
         {
-            //var win = new AddSupplierWindowView();
-            //win.ShowDialog();
+            if (visibileMainControl == true)
+            {
+                VisibileMainControl = false;
+                VisibleAddControl = true;
+            }
         }
 
         /// <summary>

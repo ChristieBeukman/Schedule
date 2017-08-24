@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Schedule.View"
         mc:Ignorable="d"
-        Title="{Binding Main.Test, Source={StaticResource Locator}}" Height="350" Width="525" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}">
+        Title="{Binding Main.Test, Source={StaticResource Locator}}" Height="350" Width="525" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}" Background="#FF2A2842">
     <Grid>
-        <local:MainSupplierView />
+        <local:MainSupplierView Margin="0,0,228,74" />
     </Grid>
 </Window>
