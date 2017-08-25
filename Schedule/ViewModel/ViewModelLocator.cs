@@ -22,6 +22,8 @@ namespace Schedule.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<SupplierViewModel>();
             SimpleIoc.Default.Register<IDataAccessSupplier, DataAccessSupplier>();
+            SimpleIoc.Default.Register<IDataAccessCategory, DataAccessCategories>();
+            SimpleIoc.Default.Register<CategoryViewModel>();
         }
 
         public MainViewModel Main
@@ -38,6 +40,15 @@ namespace Schedule.ViewModel
                 return ServiceLocator.Current.GetInstance<SupplierViewModel>();
             }
         }
+
+        public CategoryViewModel CategoryVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<CategoryViewModel>();
+            }
+        }
+
 
         public static void Cleanup()
         {
