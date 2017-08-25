@@ -36,7 +36,8 @@ namespace Schedule.ViewModel
         int SupID;
         string supLocation;
         private Suppliier _OldSupplier;
-
+        private bool _MainView =true;
+        private bool _AddView = false;
 
         #endregion Private
 
@@ -212,34 +213,33 @@ namespace Schedule.ViewModel
             }
         }
 
-        public bool VisibileMainControl
+        public bool MainView
         {
             get
             {
-                return visibileMainControl;
+                return _MainView;
             }
 
             set
             {
-                visibileMainControl = value;
-                RaisePropertyChanged("VisibileMainControl");
+                _MainView = value;
+                RaisePropertyChanged("MainView");
             }
         }
 
-        public bool VisibleAddControl
+        public bool AddView
         {
             get
             {
-                return visibleAddControl;
+                return _AddView;
             }
 
             set
             {
-                visibleAddControl = value;
-                RaisePropertyChanged("VisibleAddControl");
+                _AddView = value;
+                RaisePropertyChanged("AddView");
             }
         }
-
 
         #endregion Public
 
@@ -333,6 +333,10 @@ namespace Schedule.ViewModel
             _ServiceProxy.CreateSupplier(Sup);
             RaisePropertyChanged("Sup");
             MessageBox.Show(Sup + " has been succesfully added");
+            AddView = false;
+            MainView = true;
+            RaisePropertyChanged("AddView");
+            RaisePropertyChanged("MainView");
         }
 
         /// <summary>
@@ -340,11 +344,18 @@ namespace Schedule.ViewModel
         /// </summary>
         void OpenAddSupplierWindow()
         {
-            if (visibileMainControl == true)
+            if (MainView == true)
             {
-                VisibileMainControl = false;
-                VisibleAddControl = true;
+                MainView = false;
+                AddView = true;
             }
+            else
+            {
+                MainView = true;
+                AddView = false;
+            }
+            RaisePropertyChanged("MainView");
+            RaisePropertyChanged("AddView");
         }
 
         /// <summary>
