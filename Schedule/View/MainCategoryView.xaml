@@ -300,7 +300,7 @@
     </UserControl.DataContext>
 
     <Grid>
-        <GroupBox Style="{DynamicResource GroupBoxStyle}" >
+        <GroupBox Style="{DynamicResource GroupBoxStyle}" Visibility="{Binding CategoryVM.VisibleControl, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}" >
             <Grid>
                 <Grid HorizontalAlignment="Center" Margin="15,15,0,0">
                     <Grid.ColumnDefinitions>
@@ -397,7 +397,7 @@
                                 Background="Green"
                                 FontFamily="Britannic Bold"
                                 FontWeight="Bold" 
-                                FontSize="14" Margin="10,2"/>
+                                FontSize="14" Margin="10,2" Command="{Binding CategoryVM.OpenAddCategoryViewCommand, Source={StaticResource Locator}}"/>
 
                         <Button Content="Save"
                                 Width="50"
@@ -449,6 +449,6 @@
                 </GroupBox>
             </Grid>
         </GroupBox>
-
+        <local:AddCategoryView Visibility="{Binding CategoryVM.AddView, Converter={StaticResource VisibleConvert}, Source={StaticResource Locator}}" />
     </Grid>
 </UserControl>

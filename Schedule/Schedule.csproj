@@ -80,6 +80,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\AddCategoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AddSupplierView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +149,9 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SupplierViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\AddCategoryView.xaml.cs">
+      <DependentUpon>AddCategoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AddSupplierView.xaml.cs">
       <DependentUpon>AddSupplierView.xaml</DependentUpon>
     </Compile>
