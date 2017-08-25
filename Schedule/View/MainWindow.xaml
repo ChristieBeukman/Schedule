@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="{Binding Main.Test, Source={StaticResource Locator}}" Height="350" Width="525" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}" Background="#FF222936">
     <Grid>
-        <local:MainSupplierView />
+        <local:MainCategoryView />
     </Grid>
 </Window>
