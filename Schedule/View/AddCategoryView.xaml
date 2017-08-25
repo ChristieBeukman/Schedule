@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="Schedule.View.AddCategoryView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Schedule.View"
+             xmlns:Converters="clr-namespace:Schedule.Converters" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/StyleDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Converters:BoolVisibleInvisibleConverter x:Key="Convert"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Mode="OneWay" Path="CategoryVM" Source="{StaticResource Locator}"/>
+    </UserControl.DataContext>
+    <Grid Margin="0,0,0,50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="21*"/>
+            <RowDefinition Height="29*"/>
+        </Grid.RowDefinitions>
+        <GroupBox Style="{DynamicResource GroupBoxStyle}" 
+                  Header="Add" 
+                  FontWeight="Bold" 
+                  Foreground="#FFF9F9F9" 
+                  Height="99"
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Right" 
+                  Width="300">
+            <Grid Visibility="{Binding CategoryVM.AddView, Converter={StaticResource Convert}, Source={StaticResource Locator}}">
+                <Grid Margin="10,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Content="Category"
+                           Grid.Column="0"
+                           Grid.Row="0"
+                           HorizontalContentAlignment="Center"
+                           VerticalContentAlignment="Center"
+                           Foreground="Black"
+                           FontFamily="Stencil"
+                           FontSize="18" HorizontalAlignment="Right">
+                        <Label.Effect>
+                            <DropShadowEffect Color="White"
+                                              BlurRadius="0"
+                                              ShadowDepth="1"/>
+                        </Label.Effect>
+                    </Label>
+                    <Label Content="Description"
+                           Grid.Column="0"
+                           Grid.Row="1"
+                           HorizontalContentAlignment="Center"
+                           VerticalContentAlignment="Center"
+                           Foreground="Black"
+                           FontFamily="Stencil"
+                           FontSize="18" HorizontalAlignment="Right">
+                        <Label.Effect>
+                            <DropShadowEffect Color="White"
+                                              BlurRadius="0"
+                                              ShadowDepth="1"/>
+                        </Label.Effect>
+                    </Label>
+                   
+
+
+                    <TextBox Grid.Column="1"
+                             Grid.Row="0" Style="{DynamicResource GlassTextBox}"
+                             Width="120"
+                             Height="24"
+                             Foreground="White" Text="{Binding CategoryVM.Cat.Name, Source={StaticResource Locator}}"
+                           />
+                    <TextBox Grid.Column="1"
+                             Grid.Row="1" Style="{DynamicResource GlassTextBox}"
+                             Width="120"
+                             Height="24"
+                             Foreground="White" Text="{Binding CategoryVM.Cat.Description, Source={StaticResource Locator}}"
+                           />
+                    
+                </Grid>
+            </Grid>
+        </GroupBox>
+        <GroupBox Style="{DynamicResource GroupBoxStyle}" Margin="82,104,86,89" Grid.RowSpan="2">
+            <Grid Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Grid.Row="1" Content="Save" Style="{DynamicResource GlassButton}" Height="40" Width="40" Margin="0" Background="#FF23FF00" Foreground="White" Command="{Binding CategoryVM.AddCategoryCommand, Source={StaticResource Locator}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+                <Button Grid.Column="1" Grid.Row="1" Content="Cancel" Style="{DynamicResource GlassButton}" Height="40" Width="40" Margin="0" Background="#FFFF5100" Foreground="White" Command="{Binding CategoryVM.OpenAddCategoryViewCommand, Source={StaticResource Locator}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="11"/>
+            </Grid>
+
+        </GroupBox>
+
+    </Grid>
+</UserControl>
