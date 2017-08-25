@@ -92,6 +92,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\MainItemsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainSupplierView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +165,9 @@
     </Compile>
     <Compile Include="View\MainCategoryView.xaml.cs">
       <DependentUpon>MainCategoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainItemsView.xaml.cs">
+      <DependentUpon>MainItemsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainSupplierView.xaml.cs">
       <DependentUpon>MainSupplierView.xaml</DependentUpon>
