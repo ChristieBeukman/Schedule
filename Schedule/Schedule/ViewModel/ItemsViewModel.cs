@@ -23,8 +23,7 @@ namespace Schedule.ViewModel
         private ObservableCollection<CategoryItem> _CategoryItems;
         private CategoryItem _SeletedCategory;
         private Item _NewItem;
-        private Item _OldItem;
-        private ItemCategoryJoinModel _OldJoinedItem;
+        private ItemCategoryJoinModel _oldJoined;
         int _CatID;
         private string _catName;
         private string _ItemName;
@@ -106,21 +105,6 @@ namespace Schedule.ViewModel
                 RaisePropertyChanged("NewItem");
             }
         }
-
-        public Item OldItem
-        {
-            get
-            {
-                return _OldItem;
-            }
-
-            set
-            {
-                _OldItem = value;
-                RaisePropertyChanged("OldItem");
-            }
-        }
-
 
         public string ItemName
         {
@@ -234,17 +218,17 @@ namespace Schedule.ViewModel
             }
         }
 
-        public ItemCategoryJoinModel OldJoinedItem
+        public ItemCategoryJoinModel OldJoined
         {
             get
             {
-                return _OldJoinedItem;
+                return _oldJoined;
             }
 
             set
             {
-                _OldJoinedItem = value;
-                RaisePropertyChanged("OldJoinedItem");
+                _oldJoined = value;
+                RaisePropertyChanged("OldJoined");
             }
         }
 
@@ -253,7 +237,7 @@ namespace Schedule.ViewModel
         #region Commmands
 
         public RelayCommand ToggleEditCommand { get; set; }
-        public RelayCommand UpdateItemCommand { get; set; }
+        public RelayCommand UpdateCommand { get; set; }
 
         #endregion Commamds
         #endregion Properties
@@ -268,15 +252,12 @@ namespace Schedule.ViewModel
 
             JoinedItems = new ObservableCollection<ItemCategoryJoinModel>();
             CategoryItems = new ObservableCollection<CategoryItem>();
-            SeletedCategory = new CategoryItem();
-            SelectedJoinedItem = new ItemCategoryJoinModel();
-            NewItem = new Item();
 
             GetCategories();
             GetJoinedItems();
 
             ToggleEditCommand = new RelayCommand(ToggleControl);
-            UpdateItemCommand = new RelayCommand(UpdateItem);
+            UpdateCommand = new RelayCommand(UpdateItems);
 
         }
         #endregion
@@ -297,23 +278,9 @@ namespace Schedule.ViewModel
                 HiddenControlItem = true;
                 VisibleControlItem = false;
 
-                OldItem = new Item();
-                OldJoinedItem = new ItemCategoryJoinModel();
+                
+                OldJoined = SelectedJoinedItem;
 
-                OldItem.ItemId = SelectedJoinedItem.ItemId;
-                OldItem.Name = SelectedJoinedItem.ItemName;
-                OldItem.Description = SelectedJoinedItem.Description;
-                OldItem.QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
-                OldItem.CategoryItemId = SelectedJoinedItem.CategoryItemId;
-                OldJoinedItem = SelectedJoinedItem;
-
-
-                ItemName = SelectedJoinedItem.ItemName;
-                ItemDescription = SelectedJoinedItem.Description;
-                QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
-                CatName = SeletedCategory.Name;
-
-                RaisePropertyChanged("OldItem");
                 RaisePropertyChanged("CatName");
                 RaisePropertyChanged("ItemName");
                 RaisePropertyChanged("ItemDescription");
@@ -344,22 +311,30 @@ namespace Schedule.ViewModel
 
         }
 
-        void UpdateItem()
+        void AddItems()
+        {
+
+        }
+
+        void UpdateItems()
         {
             if (SelectedJoinedItem != null)
             {
-                NewItem.ItemId = SelectedJoinedItem.ItemId;
-                NewItem.Description = SelectedJoinedItem.Description;
-                NewItem.Name = SelectedJoinedItem.ItemName;
-                NewItem.QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
-                NewItem.CategoryItemId = SeletedCategory.CategoryItemId;
+                CatID = SeletedCategory.CategoryItemId;
+                ItemName = SelectedJoinedItem.ItemName;
+                ItemDescription = SelectedJoinedItem.Description;
+                QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
 
-                //JoinedItems.Add(SelectedJoinedItem);
-                JoinedItems.Remove(OldJoinedItem);
-              
-                
+                NewItem = new Item();
 
-               // _ServiceProxy.UpdateItem(NewItem, OldItem);
+                NewItem.Name = ItemName;
+                NewItem.Description = ItemDescription;
+                NewItem.QuantityPerItem = QuantityPerItem;
+                NewItem.CategoryItemId = CatID;
+
+                JoinedItems.Remove(OldJoined);
+                JoinedItems.Add(SelectedJoinedItem);
+                _ServiceProxy.UpdateItem(NewItem, NewItem);
                 GetJoinedItems();
                 MessageBox.Show("Updated");
                 RaisePropertyChanged("SelectedJoinedItem");

@@ -372,7 +372,7 @@
                          Grid.Row="0" 
                          Foreground="White"
                          Style="{DynamicResource GlassTextBox}" 
-                         Text="{Binding ItemsVM.SelectedJoinedItem.ItemName, Source={StaticResource Locator}}"
+                         Text="{Binding ItemsVM.SelectedJoinedItem.CategoryName, Source={StaticResource Locator}}"
                          Visibility="{Binding ItemsVM.HiddenControlItem, Converter={StaticResource converter}, Source={StaticResource Locator}}"/>
 
                 <ComboBox Grid.Column="1"
@@ -394,7 +394,9 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="2" 
                          Foreground="White"
-                         Style="{DynamicResource GlassTextBox}" IsReadOnly="{Binding ItemsVM.ReadOnlyControlItem, Source={StaticResource Locator}}" Text="{Binding ItemsVM.SelectedJoinedItem.QuantityPerItem, Source={StaticResource Locator}}"/>
+                         Style="{DynamicResource GlassTextBox}" 
+                         IsReadOnly="{Binding ItemsVM.ReadOnlyControlItem, Source={StaticResource Locator}}"
+                         Text="{Binding ItemsVM.SelectedJoinedItem.QuantityPerItem, Source={StaticResource Locator}}"/>
                 
                 <TextBox Grid.Column="1"
                          Grid.Row="3" 
@@ -440,7 +442,7 @@
                     Background="#FF5EE600" 
                     Foreground="#FFFDFDFD" 
                     FontFamily="Britannic Bold" 
-                    FontSize="16" Visibility="{Binding ItemsVM.HiddenControlItem, Converter={StaticResource converter}, Source={StaticResource Locator}}" Command="{Binding ItemsVM.UpdateItemCommand, Source={StaticResource Locator}}" 
+                    FontSize="16" Visibility="{Binding ItemsVM.HiddenControlItem, Converter={StaticResource converter}, Source={StaticResource Locator}}" Command="{Binding ItemsVM.UpdateCommand, Source={StaticResource Locator}}" 
                     />
                 <Button 
                     Height="50"

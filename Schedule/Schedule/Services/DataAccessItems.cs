@@ -68,10 +68,10 @@ namespace Schedule.Services
         {
             if (New != null)
             {
-                var u = from c in ctx.Items
-                        where c.ItemId == New.ItemId
-                        select c;
-                ctx.Entry(u).State = System.Data.Entity.EntityState.Modified;
+                var v = from i in ctx.Items
+                        where i.ItemId == New.ItemId
+                        select i;
+                ctx.Entry(New).State = System.Data.Entity.EntityState.Modified;
                 ctx.SaveChanges();
             }
         }
