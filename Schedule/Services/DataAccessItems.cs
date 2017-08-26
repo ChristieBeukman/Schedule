@@ -66,7 +66,14 @@ namespace Schedule.Services
 
         public void UpdateItem(Item Old, Item New)
         {
-            throw new NotImplementedException();
+            if (New != null)
+            {
+                var v = from i in ctx.Items
+                        where i.ItemId == New.ItemId
+                        select i;
+                ctx.Entry(New).State = System.Data.Entity.EntityState.Modified;
+                ctx.SaveChanges();
+            }
         }
     }
 }
