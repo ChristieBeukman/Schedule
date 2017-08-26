@@ -17,16 +17,24 @@ namespace Schedule.ViewModel
     {
         IDataAccessItems _ServiceProxy;
 #region Properties
-        #region Private Properties
+#region Private Properties
         private ObservableCollection<ItemCategoryJoinModel> _JoinedItems;
         private ItemCategoryJoinModel _SelectedJoinedItem;
         private ObservableCollection<CategoryItem> _CategoryItems;
         private CategoryItem _SeletedCategory;
         private Item _NewItem;
         int _CatID;
+        private string _catName;
+        private string _ItemName;
+        private string _ItemDescription;
+        private int? _QuantityPerItem;
+        private bool _ReadOnlyControlItem = true;
+        private bool _HiddenControlItem = false;
+        private bool _VisibleControlItem = true;
+
         #endregion Private
 
-        #region Public Properties
+#region Public Properties
         public ObservableCollection<ItemCategoryJoinModel> JoinedItems
         {
             get
@@ -97,6 +105,48 @@ namespace Schedule.ViewModel
             }
         }
 
+        public string ItemName
+        {
+            get
+            {
+                return _ItemName;
+            }
+
+            set
+            {
+                _ItemName = value;
+                RaisePropertyChanged("ItemName");
+            }
+        }
+
+        public string ItemDescription
+        {
+            get
+            {
+                return _ItemDescription;
+            }
+
+            set
+            {
+                _ItemDescription = value;
+                RaisePropertyChanged("ItemDescription");
+            }
+        }
+
+        public int? QuantityPerItem
+        {
+            get
+            {
+                return _QuantityPerItem;
+            }
+
+            set
+            {
+                _QuantityPerItem = value;
+                RaisePropertyChanged("QuantityPerItem");
+            }
+        }
+
         public int CatID
         {
             get
@@ -110,23 +160,124 @@ namespace Schedule.ViewModel
                 RaisePropertyChanged("CatID");
             }
         }
+
+        public string CatName
+        {
+            get
+            {
+                return _catName;
+            }
+
+            set
+            {
+                _catName = value;
+                RaisePropertyChanged("CatName");
+            }
+        }
+
+        public bool ReadOnlyControlItem
+        {
+            get
+            {
+                return _ReadOnlyControlItem;
+            }
+
+            set
+            {
+                _ReadOnlyControlItem = value;
+                RaisePropertyChanged("ReadOnlyControlItem");
+            }
+        }
+
+        public bool HiddenControlItem
+        {
+            get
+            {
+                return _HiddenControlItem;
+            }
+
+            set
+            {
+                _HiddenControlItem = value;
+                RaisePropertyChanged("HiddenControlItem");
+            }
+        }
+
+        public bool VisibleControlItem
+        {
+            get
+            {
+                return _VisibleControlItem;
+            }
+
+            set
+            {
+                _VisibleControlItem = value;
+                RaisePropertyChanged("VisibleControlItem");
+            }
+        }
+
+
         #endregion Public
+
+        #region Commmands
+
+        public RelayCommand ToggleEditCommand { get; set; }
+        #endregion Commamds
         #endregion Properties
 
-#region Constructor
+        #region Constructor
         /// <summary>
         /// COnstructor
         /// </summary>
         public ItemsViewModel(IDataAccessItems prxy)
         {
             _ServiceProxy = prxy;
+
             JoinedItems = new ObservableCollection<ItemCategoryJoinModel>();
+            CategoryItems = new ObservableCollection<CategoryItem>();
+
+            GetCategories();
             GetJoinedItems();
+
+            ToggleEditCommand = new RelayCommand(ToggleControl);
+
         }
         #endregion
 
 #region Methods
-    void GetJoinedItems()
+
+        void ToggleControl()
+        {
+            if (VisibleControlItem == false)
+            {
+                ReadOnlyControlItem = true;
+                HiddenControlItem = false;
+                VisibleControlItem = true;
+            }
+            else if (VisibleControlItem == true)
+            {
+                ReadOnlyControlItem = false;
+                HiddenControlItem = true;
+                VisibleControlItem = false;
+
+                ItemName = SelectedJoinedItem.ItemName;
+                ItemDescription = SelectedJoinedItem.Description;
+                QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
+                CatName = SeletedCategory.Name;
+
+                RaisePropertyChanged("CatName");
+                RaisePropertyChanged("ItemName");
+                RaisePropertyChanged("ItemDescription");
+                RaisePropertyChanged("QuantityPerItem");
+            }
+            RaisePropertyChanged("ReadOnlyControlItem");
+            RaisePropertyChanged("HiddenControlItem");
+            RaisePropertyChanged("VisibleControlItem");
+
+        }
+
+        void GetJoinedItems()
         {
             JoinedItems.Clear();
             foreach (var item in _ServiceProxy.GetItems())
@@ -134,6 +285,18 @@ namespace Schedule.ViewModel
                 JoinedItems.Add(item);
             }
         }
-#endregion
+
+        void GetCategories()
+        {
+            CategoryItems.Clear();
+            foreach (var item in _ServiceProxy.GetCategories())
+            {
+                CategoryItems.Add(item);
+            }
+
+        }
+
+
+        #endregion
     }
 }
