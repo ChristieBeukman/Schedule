@@ -69,7 +69,7 @@ namespace Schedule.Services
             if (New != null)
             {
                 var v = from i in ctx.Items
-                        where i.ItemId == New.ItemId
+                        where i.ItemId == 2
                         select i;
                 ctx.Entry(New).State = System.Data.Entity.EntityState.Modified;
                 ctx.SaveChanges();

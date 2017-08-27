@@ -255,6 +255,8 @@ namespace Schedule.ViewModel
 
             GetCategories();
             GetJoinedItems();
+            OldJoined = new ItemCategoryJoinModel();
+            NewItem = new Item();
 
             ToggleEditCommand = new RelayCommand(ToggleControl);
             UpdateCommand = new RelayCommand(UpdateItems);
@@ -279,12 +281,24 @@ namespace Schedule.ViewModel
                 VisibleControlItem = false;
 
                 
-                OldJoined = SelectedJoinedItem;
+                ItemName =  SelectedJoinedItem.ItemName;
+                ItemDescription = SelectedJoinedItem.Description;
+                QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
+                CatID = SelectedJoinedItem.CategoryItemId;
+                CatName = SelectedJoinedItem.CategoryName;
+
+                OldJoined.ItemName = ItemName;
+                OldJoined.Description = ItemDescription;
+                OldJoined.QuantityPerItem = QuantityPerItem;
+                OldJoined.CategoryName = CatName;
+                OldJoined.CategoryItemId = CatID;
 
                 RaisePropertyChanged("CatName");
                 RaisePropertyChanged("ItemName");
                 RaisePropertyChanged("ItemDescription");
                 RaisePropertyChanged("QuantityPerItem");
+                RaisePropertyChanged("CatName");
+                RaisePropertyChanged("ÓldJoined");
             }
             RaisePropertyChanged("ReadOnlyControlItem");
             RaisePropertyChanged("HiddenControlItem");
@@ -320,25 +334,38 @@ namespace Schedule.ViewModel
         {
             if (SelectedJoinedItem != null)
             {
-                CatID = SeletedCategory.CategoryItemId;
-                ItemName = SelectedJoinedItem.ItemName;
-                ItemDescription = SelectedJoinedItem.Description;
-                QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
-
-                NewItem = new Item();
-
-                NewItem.Name = ItemName;
-                NewItem.Description = ItemDescription;
-                NewItem.QuantityPerItem = QuantityPerItem;
-                NewItem.CategoryItemId = CatID;
-
-                JoinedItems.Remove(OldJoined);
                 JoinedItems.Add(SelectedJoinedItem);
+                JoinedItems.Remove(OldJoined);
+
+                NewItem.ItemId = SelectedJoinedItem.ItemId;
+                NewItem.Name = SelectedJoinedItem.ItemName;
+                NewItem.Description = SelectedJoinedItem.Description;
+                NewItem.QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
+                NewItem.CategoryItemId = SeletedCategory.CategoryItemId;
+                
                 _ServiceProxy.UpdateItem(NewItem, NewItem);
-                GetJoinedItems();
-                MessageBox.Show("Updated");
-                RaisePropertyChanged("SelectedJoinedItem");
+                RaisePropertyChanged("JoinedItems");
                 ToggleControl();
+                GetJoinedItems();
+                //CatID = SeletedCategory.CategoryItemId;
+                //ItemName = SelectedJoinedItem.ItemName;
+                //ItemDescription = SelectedJoinedItem.Description;
+                //QuantityPerItem = SelectedJoinedItem.QuantityPerItem;
+
+                //NewItem = new Item();
+
+                //NewItem.Name = ItemName;
+                //NewItem.Description = ItemDescription;
+                //NewItem.QuantityPerItem = QuantityPerItem;
+                //NewItem.CategoryItemId = CatID;
+
+                //JoinedItems.Remove(OldJoined);
+                //JoinedItems.Add(SelectedJoinedItem);
+                //_ServiceProxy.UpdateItem(NewItem, NewItem);
+                //GetJoinedItems();
+                //MessageBox.Show("Updated");
+                //RaisePropertyChanged("SelectedJoinedItem");
+                //ToggleControl();
             }
         }
         #endregion

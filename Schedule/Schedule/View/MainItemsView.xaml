@@ -372,7 +372,7 @@
                          Grid.Row="0" 
                          Foreground="White"
                          Style="{DynamicResource GlassTextBox}" 
-                         Text="{Binding ItemsVM.SelectedJoinedItem.CategoryName, Source={StaticResource Locator}}"
+                         Text="{Binding ItemsVM.SelectedJoinedItem.ItemName, Source={StaticResource Locator}}"
                          Visibility="{Binding ItemsVM.HiddenControlItem, Converter={StaticResource converter}, Source={StaticResource Locator}}"/>
 
                 <ComboBox Grid.Column="1"
